@@ -1,13 +1,19 @@
-import { createClient } from 'next-sanity'
-import { cache } from "react"
+// ./sanity/lib/client.ts
 
-import { apiVersion, dataset, projectId, useCdn } from '../env'
+import { createClient } from "@sanity/client/stega";
+
+import { apiVersion, dataset, projectId, useCdn } from "../env";
 
 export const client = createClient({
   apiVersion,
   dataset,
   projectId,
   useCdn,
-})
-
-export const cachedClient = cache(client.fetch.bind(client))
+  // These settings will be overridden in 
+  // ./sanity/lib/store.ts when draftMode is enabled
+  perspective: "published",
+  stega: {
+    enabled: false,
+    studioUrl: "/studio",
+  },
+});
